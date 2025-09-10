@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CMS Admin - ProKitchen</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+    h1 { color: #1e40af; }
+    input, textarea { width: 100%; padding: 8px; margin: 8px 0; }
+    button { padding: 10px 20px; background: #f59e0b; color: white; border: none; cursor: pointer; }
+    button:hover { background: #d97706; }
+    .article { background: white; padding: 12px; margin: 12px 0; border-radius: 8px; }
+    .article h3 { margin: 0 0 8px 0; }
+  </style>
+</head>
+<body>
+  <h1>Panel CMS - Artículos</h1>
+
+  <h2>Crear nuevo artículo</h2>
+  <form id="article-form">
+    <input type="text" id="title" placeholder="Título del artículo" required>
+    <textarea id="content" rows="5" placeholder="Contenido en HTML" required></textarea>
+    <button type="submit">Guardar artículo</button>
+  </form>
+
+  <h2>Artículos existentes</h2>
+  <div id="articles-list"></div>
+
+
+  <h2>Editar Hero</h2>
+    <form id="hero-form">
+    <input type="text" id="hero-warning" placeholder="Texto de alerta" required>
+    <input type="text" id="hero-title" placeholder="Título principal" required>
+    <input type="text" id="hero-subtitle" placeholder="Subtítulo" required>
+    <button type="submit">Guardar Hero</button>
+    </form>
+
+
+    <h2>Editar Sección Introducción</h2>
+    <form id="intro-form">
+    <label>Título:</label>
+    <input type="text" id="intro-title" required>
+
+    <label>Highlight:</label>
+    <textarea id="intro-highlight" required></textarea>
+
+    <h3>Testimonios</h3>
+    <div id="intro-testimonials"></div>
+    <button type="button" id="add-testimonial">Añadir Testimonio</button>
+
+    <button type="submit">Guardar Introducción</button>
+    </form>
+
+
+  <script src="/js/admin.js"></script>
+</body>
+</html>

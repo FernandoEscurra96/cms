@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resistencia en Cocina Profesional: Test Real de 5 Batidoras Industriales</title>
+    <meta name="description" content="Test exhaustivo de 5 batidoras industriales en cocina profesional. Descubre los 2 modelos que mis clientes usan sin parar.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1e40af;
+            --primary-dark: #1e3a8a;
+            --secondary: #f59e0b;
+            --accent: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #111827;
+            --light: #f8fafc;
+            --gray: #6b7280;
+            --white: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --gradient: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            --radius: 16px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.7;
+            color: var(--dark);
+            background: var(--light);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* HEADER */
+        .header {
+            background: var(--gradient);
+            color: var(--white);
+            padding: 16px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 32px;
+        }
+
+        .nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            opacity: 0.9;
+        }
+
+        .nav a:hover {
+            opacity: 1;
+            transform: translateY(-1px);
+        }
+
+        /* HERO */
+        .hero {
+            background: var(--gradient);
+            color: var(--white);
+            padding: 120px 0 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .warning-alert {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--danger);
+            color: var(--white);
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 32px;
+            animation: pulse 2s infinite;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        /* MAIN CONTENT */
+        .main {
+            background: var(--white);
+            margin: -40px auto 0;
+            border-radius: var(--radius) var(--radius) 0 0;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+        }
+
+        .article {
+            padding: 64px 48px;
+        }
+
+        .section {
+            margin-bottom: 64px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section h2 {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 24px;
+            position: relative;
+            padding-left: 24px;
+        }
+
+        .section h2::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 40px;
+            background: var(--secondary);
+            border-radius: 3px;
+        }
+
+        .section h3 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark);
+            margin: 32px 0 16px;
+        }
+
+        .section p {
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+
+        /* STATS GRID */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin: 40px 0;
+        }
+
+        .stat {
+            background: linear-gradient(135deg, var(--light), #e2e8f0);
+            padding: 32px;
+            border-radius: var(--radius);
+            text-align: center;
+            border-left: 6px solid var(--primary);
+            transform: translateY(0);
+            transition: all 0.4s ease;
+            box-shadow: var(--shadow);
+        }
+
+        .stat:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-number {
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--primary);
+            display: block;
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 16px;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        /* TABLE */
+        .table-container {
+            overflow-x: auto;
+            margin: 40px 0;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            background: var(--white);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 20px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 16px;
+        }
+
+        th {
+            background: var(--primary);
+            color: var(--white);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+        }
+
+        .winner-row {
+            background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+            font-weight: 600;
+        }
+
+        .price {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        /* BUTTONS */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--secondary);
+            color: var(--white);
+            padding: 16px 32px;
+            text-decoration: none;
+            border-radius: var(--radius);
+            font-weight: 700;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #d97706;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn::after {
+            content: '→';
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover::after {
+            transform: translateX(4px);
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+        /* IMAGE PLACEHOLDER */
+        .img-placeholder {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(45deg, #f1f5f9, #e2e8f0);
+            border-radius: var(--radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 24px 0;
+            color: var(--gray);
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        /* ERROR CARDS */
+        .error-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 32px;
+            margin: 40px 0;
+        }
+
+        .error-card {
+            background: #fef2f2;
+            border: 2px solid var(--danger);
+            border-radius: var(--radius);
+            padding: 32px;
+            position: relative;
+        }
+
+        .error-card::before {
+            content: '⚠️';
+            position: absolute;
+            top: -16px;
+            left: 24px;
+            background: var(--danger);
+            color: var(--white);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .error-card h3 {
+            color: var(--danger);
+            margin-top: 8px;
+        }
+
+        /* TESTIMONIALS */
+        .testimonials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 32px;
+            margin: 40px 0;
+        }
+
+        .testimonial {
+            background: var(--light);
+            padding: 32px;
+            border-radius: var(--radius);
+            border-left: 6px solid var(--accent);
+            position: relative;
+            box-shadow: var(--shadow);
+        }
+
+        .testimonial::before {
+            content: '"';
+            position: absolute;
+            top: -8px;
+            left: 32px;
+            font-size: 64px;
+            color: var(--accent);
+            opacity: 0.2;
+            font-family: Georgia, serif;
+        }
+
+        .testimonial-text {
+            font-size: 18px;
+            line-height: 1.6;
+            color: var(--dark);
+            margin-bottom: 24px;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        .testimonial-role {
+            color: var(--gray);
+            font-size: 14px;
+            margin-bottom: 16px;
+        }
+
+        .testimonial-metric {
+            background: #ecfdf5;
+            color: var(--accent);
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* TIMELINE */
+        .timeline {
+            position: relative;
+            margin: 40px 0;
+            padding-left: 80px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 32px;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -56px;
+            top: 8px;
+            width: 24px;
+            height: 24px;
+            background: var(--secondary);
+            border: 4px solid var(--white);
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px var(--primary);
+        }
+
+        .timeline-content {
+            background: var(--white);
+            padding: 32px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary);
+        }
+
+        .timeline-content h4 {
+            color: var(--primary);
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .timeline-content ul {
+            margin: 16px 0;
+            padding-left: 24px;
+        }
+
+        .timeline-content li {
+            margin-bottom: 8px;
+            color: var(--gray);
+        }
+
+        .time-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            margin-top: 16px;
+        }
+
+        .time-daily { background: #dcfce7; color: var(--accent); }
+        .time-weekly { background: #fef3c7; color: var(--warning); }
+        .time-monthly { background: #fecaca; color: var(--danger); }
+        .time-semester { background: #dbeafe; color: var(--primary); }
+
+        /* HIGHLIGHT BOXES */
+        .highlight {
+            padding: 32px;
+            border-radius: var(--radius);
+            margin: 32px 0;
+            font-weight: 500;
+        }
+
+        .highlight-success {
+            background: #f0fdf4;
+            border: 2px solid var(--accent);
+            color: #166534;
+        }
+
+        .highlight-info {
+            background: #eff6ff;
+            border: 2px solid var(--primary);
+            color: #1e40af;
+        }
+
+        .highlight-warning {
+            background: #fffbeb;
+            border: 2px solid var(--warning);
+            color: #92400e;
+        }
+
+        /* FINAL CTA */
+        .final-cta {
+            background: var(--gradient);
+            color: var(--white);
+            padding: 64px;
+            border-radius: var(--radius);
+            text-align: center;
+            margin: 64px 0;
+        }
+
+        .final-cta h3 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            color: var(--white);
+        }
+
+        .final-cta p {
+            font-size: 20px;
+            margin-bottom: 32px;
+            opacity: 0.9;
+            color: var(--white);
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-white {
+            background: var(--white);
+            color: var(--primary);
+        }
+
+        .btn-white:hover {
+            background: #f8fafc;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: var(--dark);
+            color: var(--white);
+            text-align: center;
+            padding: 48px 0;
+            margin-top: 64px;
+        }
+
+        /* ANIMATIONS */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 32px; }
+            .hero-subtitle { font-size: 18px; }
+            .nav { display: none; }
+            .article { padding: 32px 24px; }
+            .section h2 { font-size: 28px; }
+            .stats { grid-template-columns: 1fr; }
+            .error-grid { grid-template-columns: 1fr; }
+            .testimonials { grid-template-columns: 1fr; }
+            .timeline { padding-left: 40px; }
+            .timeline-dot { left: -36px; }
+            .cta-buttons { flex-direction: column; align-items: center; }
+        }
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">🔧 ProKitchen Test</div>
+                <nav class="nav">
+                    <a href="#intro">Introducción</a>
+                    <a href="#metodologia">Metodología</a>
+                    <a href="#comparativa">Comparativa</a>
+                    <a href="#errores">Errores</a>
+                    <a href="#testimonios">Testimonios</a>
+                    <a href="#mantenimiento">Mantenimiento</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="warning-alert">
+                    ⚠️ ALERTA: Rotura = $2,500 diarios perdidos
+                </div>
+                <h1>Resistencia en Cocina Profesional:<br>Test Real de 5 Batidoras Industriales</h1>
+                <p class="hero-subtitle">(y los 2 Modelos que Mis Clientes Usan Sin Parar)</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <div class="container">
+        <main class="main">
+            <article class="article">
+                
+                <!-- 1. INTRODUCCIÓN -->
+                <section id="intro" class="section">
+                    <h2>¿Por Qué las Batidoras Industriales Son Críticas en Cocina Profesional?</h2>
+                    
+                    <div class="testimonials">
+                        <div class="testimonial">
+                            <div class="testimonial-text">
+                                "La KitchenAid Pro lleva 18 meses en nuestra panadería trabajando 12 horas diarias. Calculé exactamente: hemos ahorrado $3,200 en reparaciones comparado con la anterior. El ROI fue inmediato."
+                            </div>
+                            <div class="testimonial-author">Chef María González</div>
+                            <div class="testimonial-role">Propietaria, Panadería San Marco (450 panes/día)</div>
+                            <div class="testimonial-metric">
+                                💰 Ahorro comprobado: $3,200 en 18 meses | 0 días de inactividad
+                            </div>
+                        </div>
+                        
+                        <div class="testimonial">
+                            <div class="testimonial-text">
+                                "Compramos la Hobart después de que la china se rompiera en pleno servicio de 400 personas. Es un tanque. Ya van 26 meses sin una sola falla. Literalmente vale cada centavo."
+                            </div>
+                            <div class="testimonial-author">Roberto Vázquez</div>
+                            <div class="testimonial-role">Chef Ejecutivo, Hotel Plaza Central</div>
+                            <div class="testimonial-metric">
+                                📊 Métrica brutal: 0 fallas en 780 días de operación continua
+                            </div>
+                        </div>
+
+                        <div class="testimonial">
+                            <div class="testimonial-text">
+                                "La inversión inicial de $899 me daba miedo, pero llevamos registro: nos ahorramos $180 mensuales en mantenimiento y tiempo perdido. Se pagó sola en 5 meses."
+                            </div>
+                            <div class="testimonial-author">Ana Ruiz</div>
+                            <div class="testimonial-role">Gerente, Restaurante El Fogón (600 cubiertos/día)</div>
+                            <div class="testimonial-metric">
+                                💵 ROI brutal: Inversión recuperada en 5 meses exactos
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="highlight highlight-success">
+                        <strong>📈 Patrón Consistente:</strong> Todos mis clientes que invirtieron en los 2 modelos ganadores reportan ROI positivo en menos de 8 meses. Los números no mienten.
+                    </div>
+                </section>
+
+                <!-- 6. GUÍA DE MANTENIMIENTO -->
+                <section id="mantenimiento" class="section">
+                    <h2>Guía de Mantenimiento: Cómo Triplicar la Vida Útil</h2>
+                    <p>Este cronograma está basado en 15 años de experiencia. Síguelo exactamente y tu batidora durará 8+ años en lugar de 3.</p>
+                    
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h4>DIARIO - Después de cada uso</h4>
+                                <ul>
+                                    <li>Limpieza externa con paño húmedo (nunca mojado)</li>
+                                    <li>Verificar ajuste correcto del tazón y accesorios</li>
+                                    <li>Secar completamente antes de almacenar</li>
+                                    <li>Inspección visual rápida de cables</li>
+                                </ul>
+                                <div class="time-badge time-daily">⏱️ 3 minutos máximo</div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h4>SEMANAL - Cada viernes al cierre</h4>
+                                <ul>
+                                    <li>Lubricación de engranajes (2 gotas aceite alimentario grado NSF)</li>
+                                    <li>Inspección detallada de cables y conexiones</li>
+                                    <li>Limpieza profunda de tazón con bicarbonato</li>
+                                    <li>Verificar nivel de vibración en marcha</li>
+                                </ul>
+                                <div class="time-badge time-weekly">⏱️ 15 minutos de inversión</div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h4>MENSUAL - Primer lunes del mes</h4>
+                                <ul>
+                                    <li>Calibración de velocidades con tacómetro</li>
+                                    <li>Revisión y reapriete de toda la tornillería</li>
+                                    <li>Limpieza interna (SOLO personal capacitado)</li>
+                                    <li>Medición de consumo eléctrico</li>
+                                </ul>
+                                <div class="time-badge time-monthly">⏱️ 45 minutos críticos</div>
+                            </div>
+                        </div>
+                        
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-content">
+                                <h4>SEMESTRAL - Servicio técnico profesional</h4>
+                                <ul>
+                                    <li>Cambio completo de aceites y lubricantes</li>
+                                    <li>Revisión eléctrica con multímetro</li>
+                                    <li>Calibración de torque y potencia</li>
+                                    <li>Reemplazo preventivo de sellos</li>
+                                </ul>
+                                <div class="time-badge time-semester">💰 Inversión: $120 vs $1,200+ de reposición</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="highlight highlight-info">
+                        <strong>💡 La Regla de Oro del Mantenimiento:</strong> El 91% de las fallas que he documentado eran 100% evitables con mantenimiento básico. Una inversión de $25 mensuales te ahorra $2,500+ en reparaciones mayores.
+                    </div>
+                </section>
+
+                <!-- 7. CONCLUSIÓN FINAL -->
+                <section class="section">
+                    <h2>Mi Recomendación Final: Los Que Mis Clientes Repiten Sin Cesar</h2>
+                    
+                    <p>Después de 15 años en el negocio y 240 horas de pruebas brutales, solo puedo recomendar 2 modelos sin reservas. Son los únicos que han superado TODAS mis expectativas.</p>
+
+                    <div class="final-cta">
+                        <h3>🏆 Los 2 Modelos Que Nunca Fallan</h3>
+                        <p>Estas son las ÚNICAS batidoras que mis clientes compran por segunda y tercera vez. La prueba definitiva.</p>
+                        
+                        <div class="cta-buttons">
+                            <a href="#" class="btn btn-white">
+                                🥇 KitchenAid Pro 7Qt - $899
+                                <span style="display: block; font-size: 14px; opacity: 0.7;">El que mis clientes repiten más</span>
+                            </a>
+                            <a href="#" class="btn btn-white">
+                                🥈 Hobart Legacy HL120 - $1,299  
+                                <span style="display: block; font-size: 14px; opacity: 0.7;">Para cocinas de máximo volumen</span>
+                            </a>
+                        </div>
+                        
+                        <p style="font-size: 16px; margin-top: 24px; opacity: 0.8;">
+                            ⚠️ Importante: Estos precios incluyen envío. Enlaces de afiliado que me permiten seguir haciendo estas pruebas brutales.
+                        </p>
+                    </div>
+
+                    <div class="highlight highlight-warning">
+                        <strong>🚨 Advertencia Final:</strong> Si estás considerando "ahorrar" $200-300 comprando una batidora más barata, recuerda: Una falla en hora pico te cuesta $2,500+. No vale la pena el riesgo.
+                    </div>
+
+                    <div class="highlight highlight-success">
+                        <strong>✅ Garantía Personal:</strong> Si compras cualquiera de estos 2 modelos y falla antes de 2 años con uso normal, yo personalmente te ayudo con el proceso de garantía. Tengo contactos directos en ambas empresas.
+                    </div>
+                </section>
+
+            </article>
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 ProKitchen Test - Pruebas reales para cocinas profesionales</p>
+            <p style="font-size: 14px; opacity: 0.7; margin-top: 8px;">
+                Los enlaces de productos son enlaces de afiliado. Comprando a través de estos enlaces me ayudas a mantener estas pruebas independientes.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling para navegación
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animación de aparición al hacer scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observar todas las secciones
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // Contador animado para estadísticas
+        function animateCounter(element, target, duration = 2000) {
+            let start = 0;
+            const increment = target / (duration / 16);
+            
+            const timer = setInterval(() => {
+                start += increment;
+                if (start >= target) {
+                    element.textContent = target.toLocaleString();
+                    clearInterval(timer);
+                } else {
+                    element.textContent = Math.floor(start).toLocaleString();
+                }
+            }, 16);
+        }
+
+        // Animar estadísticas cuando sean visibles
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const statNumber = entry.target.querySelector('.stat-number');
+                    const value = statNumber.textContent.replace(/[^0-9]/g, '');
+                    if (value && !statNumber.dataset.animated) {
+                        statNumber.dataset.animated = 'true';
+                        animateCounter(statNumber, parseInt(value));
+                    }
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.stat').forEach(stat => {
+            statsObserver.observe(stat);
+        });
+
+        // Efecto parallax sutil en el hero
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelector('.hero');
+            if (parallax) {
+                const speed = scrolled * 0.5;
+                parallax.style.transform = `translateY(${speed}px)`;
+            }
+        });
+
+        // Highlight activo en navegación
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav a');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.pageYOffset >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.style.opacity = '0.7';
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.style.opacity = '1';
+                }
+            });
+        });
+
+        // Efecto hover mejorado en botones
+        document.querySelectorAll('.btn').forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-3px) scale(1.02)';
+            });
+            
+            button.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Loading inicial
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '1';
+            document.querySelector('.hero-content').classList.add('fade-in-up');
+        });
+
+        async function loadHero() {
+        const res = await fetch('/api/hero');
+        const data = await res.json();
+        document.querySelector('.warning-alert').textContent = data.warningAlert;
+        document.querySelector('.hero h1').textContent = data.title;
+        document.querySelector('.hero-subtitle').textContent = data.subtitle;
+        }
+
+        loadHero();
+
+
+        async function loadIntro() {
+  try {
+    const res = await fetch('/api/intro');
+    if (!res.ok) throw new Error('Error al cargar intro');
+    const data = await res.json();
+
+    // Seleccionamos la sección intro
+    const introSection = document.getElementById('intro');
+
+    // Actualizamos el título
+    introSection.querySelector('h2').textContent = data.title;
+
+    // Limpiamos los testimonios y los volvemos a pintar
+    const testimonialsContainer = introSection.querySelector('.testimonials');
+    testimonialsContainer.innerHTML = '';
+
+    data.testimonials.forEach(t => {
+      const div = document.createElement('div');
+      div.classList.add('testimonial');
+
+      div.innerHTML = `
+        <div class="testimonial-text">${t.text}</div>
+        <div class="testimonial-author">${t.author}</div>
+        <div class="testimonial-role">${t.role}</div>
+        <div class="testimonial-metric">${t.metric}</div>
+      `;
+
+      testimonialsContainer.appendChild(div);
+    });
+
+    // Actualizamos el highlight
+    introSection.querySelector('.highlight').innerHTML = `<strong>${data.highlight}</strong>`;
+  } catch (err) {
+    console.error('Error cargando intro:', err);
+  }
+}
+
+loadIntro();
+
+    </script>
+</body>
+</html>

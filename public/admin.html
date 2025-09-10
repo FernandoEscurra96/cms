@@ -67,6 +67,13 @@
     <button id="save-highlight-info">Guardar Highlight Info</button>
   </div>
 
+
+    <div class="json-editor">
+    <h3>Config Global</h3>
+    <textarea id="config-json" rows="30"></textarea>
+    <button id="save-config">Guardar Config Global</button>
+    </div>
+
   <script>
     async function loadJson(endpoint, textareaId) {
       try {
@@ -95,6 +102,7 @@
         alert(`Error al guardar: ${err.message}`);
       }
     }
+
 
     // Cargar datos al abrir admin
     loadJson('/api/hero', 'hero-json');

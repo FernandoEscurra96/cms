@@ -147,3 +147,62 @@ app.post('/api/highlight-info', (req, res) => {
   fs.writeFileSync(HIGHLIGHT_INFO_FILE, JSON.stringify(newData, null, 2));
   res.json(newData);
 });
+
+
+
+HERO_FILE = path.join(DATA_DIR, 'hero.json');
+INTRO_FILE = path.join(DATA_DIR, 'intro.json');
+HIGHLIGHT_INFO_FILE = path.join(DATA_DIR, 'highlight-info.json');
+
+// Obtener toda la config
+app.get('/api/config', (req, res) => {
+  try {
+    const hero = fs.existsSync(HERO_FILE)
+      ? JSON.parse(fs.readFileSync(HERO_FILE, 'utf8'))
+      : {};
+    const intro = fs.existsSync(INTRO_FILE)
+      ? JSON.parse(fs.readFileSync(INTRO_FILE, 'utf8'))
+      : {};
+    const highlightInfo = fs.existsSync(HIGHLIGHT_INFO_FILE)
+      ? JSON.parse(fs.readFileSync(HIGHLIGHT_INFO_FILE, 'utf8'))
+      : {};
+
+    res.json({ hero, intro, highlightInfo });
+  } catch (err) {
+    console.error("Error leyendo config:", err);
+    res.status(500).json({ error: "No se pudo leer la configuración" });
+  }
+});
+
+// Guardar toda la config
+app.post('/api/config', (req, res) => {
+  try {
+    const { hero, intro, highlightInfo } = req.body;
+
+    // Leer los archivos existentes primero
+    const currentHero = fs.existsSync(HERO_FILE)
+      ? JSON.parse(fs.readFileSync(HERO_FILE, 'utf8'))
+      : {};
+    const currentIntro = fs.existsSync(INTRO_FILE)
+      ? JSON.parse(fs.readFileSync(INTRO_FILE, 'utf8'))
+      : {};
+    const currentHighlightInfo = fs.existsSync(HIGHLIGHT_INFO_FILE)
+      ? JSON.parse(fs.readFileSync(HIGHLIGHT_INFO_FILE, 'utf8'))
+      : {};
+
+    // Solo sobrescribimos lo que venga en el body
+    const newHero = hero || currentHero;
+    const newIntro = intro || currentIntro;
+    const newHighlightInfo = highlightInfo || currentHighlightInfo;
+
+    // Guardar archivos
+    fs.writeFileSync(HERO_FILE, JSON.stringify(newHero, null, 2));
+    fs.writeFileSync(INTRO_FILE, JSON.stringify(newIntro, null, 2));
+    fs.writeFileSync(HIGHLIGHT_INFO_FILE, JSON.stringify(newHighlightInfo, null, 2));
+
+    res.json({ hero: newHero, intro: newIntro, highlightInfo: newHighlightInfo });
+  } catch (err) {
+    console.error("Error guardando config:", err);
+    res.status(500).json({ error: "No se pudo guardar la configuración" });
+  }
+});

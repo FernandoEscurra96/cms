@@ -47,3 +47,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('save-highlight-info')
     .addEventListener('click', () => saveJson('/api/highlight-info', 'highlight-info-json'));
 });
+
+
+loadJson('/api/config', 'config-json');
+document.getElementById('save-config')
+  .addEventListener('click', () => saveJson('/api/config', 'config-json'));

@@ -124,3 +124,26 @@ app.post('/api/intro', (req, res) => {
   fs.writeFileSync(INTRO_FILE, JSON.stringify(newIntro, null, 2));
   res.json(newIntro);
 });
+
+
+const HIGHLIGHT_INFO_FILE = path.join(DATA_DIR, 'highlight-info.json');
+
+// Obtener highlight-info
+app.get('/api/highlight-info', (req, res) => {
+  if (!fs.existsSync(HIGHLIGHT_INFO_FILE)) {
+    return res.json({ text: "" });
+  }
+  const data = fs.readFileSync(HIGHLIGHT_INFO_FILE, 'utf8');
+  res.json(JSON.parse(data));
+});
+
+// Actualizar highlight-info
+app.post('/api/highlight-info', (req, res) => {
+  const { text } = req.body;
+  if (!text) {
+    return res.status(400).json({ error: "Falta el campo text" });
+  }
+  const newData = { text };
+  fs.writeFileSync(HIGHLIGHT_INFO_FILE, JSON.stringify(newData, null, 2));
+  res.json(newData);
+});

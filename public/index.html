@@ -998,6 +998,23 @@
 
 loadIntro();
 
+
+async function loadHighlightInfo() {
+  try {
+    const res = await fetch('/api/highlight-info');
+    const data = await res.json();
+
+    const highlightDiv = document.querySelector('.highlight-info');
+    if (highlightDiv) {
+      highlightDiv.innerHTML = `<strong>${data.text}</strong>`;
+    }
+  } catch (err) {
+    console.error('Error cargando highlight-info:', err);
+  }
+}
+
+loadHighlightInfo();
+
     </script>
 </body>
 </html>

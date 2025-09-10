@@ -191,6 +191,40 @@ introForm.addEventListener('submit', async (e) => {
   }
 });
 
+
+const highlightInfoForm = document.getElementById('highlight-info-form');
+const highlightInfoText = document.getElementById('highlight-info-text');
+
+async function loadHighlightInfoAdmin() {
+  try {
+    const res = await fetch('/api/highlight-info');
+    const data = await res.json();
+    highlightInfoText.value = data.text || "";
+  } catch (err) {
+    console.error(err);
+    alert('Error al cargar Highlight Info');
+  }
+}
+
+highlightInfoForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  try {
+    const newData = { text: highlightInfoText.value };
+    const res = await fetch('/api/highlight-info', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newData)
+    });
+    if (!res.ok) throw new Error('Error al guardar Highlight Info');
+    alert('Highlight Info actualizado!');
+  } catch (err) {
+    console.error(err);
+    alert('No se pudo guardar Highlight Info');
+  }
+});
+
+// Asegúrate de llamarlo al cargar admin:
+loadHighlightInfoAdmin();
 loadIntroAdmin();
 // ====== INIT ======
 loadHeroAdmin();

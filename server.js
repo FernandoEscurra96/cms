@@ -150,9 +150,9 @@ app.post('/api/highlight-info', (req, res) => {
 
 
 
-HERO_FILE = path.join(DATA_DIR, 'hero.json');
-INTRO_FILE = path.join(DATA_DIR, 'intro.json');
-HIGHLIGHT_INFO_FILE = path.join(DATA_DIR, 'highlight-info.json');
+//let HERO_FILE = path.join(DATA_DIR, 'hero.json');
+//let INTRO_FILE = path.join(DATA_DIR, 'intro.json');
+//let HIGHLIGHT_INFO_FILE = path.join(DATA_DIR, 'highlight-info.json');
 
 // Obtener toda la config
 app.get('/api/config', (req, res) => {

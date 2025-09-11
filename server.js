@@ -677,3 +677,68 @@ app.get('/api/html-for-post-inline-style', (req, res) => {
     res.status(500).json({ success: false, error: "No se pudo generar el HTML" });
   }
 });
+
+app.get('/api/full-inline', (req, res) => {
+  try {
+    const indexPath = path.join(__dirname, 'public', 'index.html');
+    const rawHtml = fs.readFileSync(indexPath, 'utf8');
+
+    // Extraer <style>...</style>
+    const styleMatch = rawHtml.match(/<style[\s\S]*?<\/style>/i);
+    let styleContent = styleMatch ? styleMatch[0] : '';
+
+    // Agregar !important a todas las propiedades CSS
+    styleContent = styleContent.replace(/([^;}{]+):\s*([^;}{]+);/g, (m, prop, val) => {
+      if (val.includes('!important')) return m;
+      return `${prop.trim()}: ${val.trim()} !important;`;
+    });
+
+    // Extraer los <div> principales de <body>
+    const bodyMatch = rawHtml.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+    let bodyContent = bodyMatch ? bodyMatch[1] : '';
+
+    // Mantener solo los <div> y secciones (eliminar scripts dentro del body)
+    bodyContent = bodyContent.replace(/<script[\s\S]*?<\/script>/gi, '').trim();
+
+    // Extraer scripts finales
+    const scriptMatch = rawHtml.match(/<script[\s\S]*?<\/script>/i);
+    const scriptContent = scriptMatch ? scriptMatch[0] : '';
+
+    // Leer JSONs
+    const hero = fs.existsSync(HERO_FILE) ? JSON.parse(fs.readFileSync(HERO_FILE, 'utf8')) : {};
+    const intro = fs.existsSync(INTRO_FILE) ? JSON.parse(fs.readFileSync(INTRO_FILE, 'utf8')) : {};
+    const highlightInfo = fs.existsSync(HIGHLIGHT_INFO_FILE) ? JSON.parse(fs.readFileSync(HIGHLIGHT_INFO_FILE, 'utf8')) : {};
+
+    // Reemplazar valores dinámicos
+    if (hero.alert) bodyContent = bodyContent.replace(/<div class="warning-alert">.*?<\/div>/, `<div class="warning-alert">${hero.alert}</div>`);
+    if (hero.title) bodyContent = bodyContent.replace(/<h1>.*?<\/h1>/, `<h1>${hero.title}</h1>`);
+    if (hero.subtitle) bodyContent = bodyContent.replace(/<p class="hero-subtitle">.*?<\/p>/, `<p class="hero-subtitle">${hero.subtitle}</p>`);
+
+    if (intro.title) bodyContent = bodyContent.replace(/<section id="intro"[\s\S]*?<h2>.*?<\/h2>/, `<section id="intro"><h2>${intro.title}</h2>`);
+    if (intro.testimonials) {
+      const testimonialsHtml = intro.testimonials.map(t => `
+        <div class="testimonial">
+          <div class="testimonial-text">${t.text}</div>
+          <div class="testimonial-author">${t.author}</div>
+          <div class="testimonial-role">${t.role}</div>
+          <div class="testimonial-metric">${t.metric}</div>
+        </div>
+      `).join("\n");
+      bodyContent = bodyContent.replace(/<div class="testimonials">[\s\S]*?<\/div>/, `<div class="testimonials">${testimonialsHtml}</div>`);
+    }
+
+    if (highlightInfo.text) {
+      bodyContent = bodyContent.replace(/<div class="highlight highlight-info">[\s\S]*?<\/div>/, `<div class="highlight highlight-info">${highlightInfo.text}</div>`);
+    }
+
+    // Retornar JSON
+    res.json({
+      success: true,
+      html: styleContent + "\n" + bodyContent + "\n" + scriptContent
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, error: "Error generando HTML completo" });
+  }
+});

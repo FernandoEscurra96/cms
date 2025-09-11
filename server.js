@@ -678,63 +678,93 @@ app.get('/api/html-for-post-inline-style', (req, res) => {
   }
 });
 
+
+const usedSelectors = [
+  '.hero-content', '.warning-alert', '.hero-subtitle',
+  '.testimonial', '.testimonial-text', '.testimonial-author',
+  '.testimonial-role', '.testimonial-metric',
+  '#intro', '.testimonials',
+  '.highlight.highlight-info'
+];
+
 app.get('/api/full-inline', (req, res) => {
   try {
     const indexPath = path.join(__dirname, 'public', 'index.html');
     const rawHtml = fs.readFileSync(indexPath, 'utf8');
 
-    // Extraer <style>...</style>
+    // Extraer <style>
     const styleMatch = rawHtml.match(/<style[\s\S]*?<\/style>/i);
     let styleContent = styleMatch ? styleMatch[0] : '';
 
-    // Agregar !important a todas las propiedades CSS
-    styleContent = styleContent.replace(/([^;}{]+):\s*([^;}{]+);/g, (m, prop, val) => {
-      if (val.includes('!important')) return m;
-      return `${prop.trim()}: ${val.trim()} !important;`;
-    });
+    // Solo mantener reglas CSS que correspondan a los divs que generamos
+    const usedSelectors = [
+      '.hero-content', '.warning-alert', '.hero-subtitle',
+      '.testimonial', '.testimonial-text', '.testimonial-author',
+      '.testimonial-role', '.testimonial-metric',
+      '#intro', '.testimonials',
+      '.highlight.highlight-info'
+    ];
 
-    // Extraer los <div> principales de <body>
-    const bodyMatch = rawHtml.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
-    let bodyContent = bodyMatch ? bodyMatch[1] : '';
-
-    // Mantener solo los <div> y secciones (eliminar scripts dentro del body)
-    bodyContent = bodyContent.replace(/<script[\s\S]*?<\/script>/gi, '').trim();
-
-    // Extraer scripts finales
-    const scriptMatch = rawHtml.match(/<script[\s\S]*?<\/script>/i);
-    const scriptContent = scriptMatch ? scriptMatch[0] : '';
+    // Filtrar reglas
+    const cssRules = [];
+    const regex = /([^{]+)\{([^}]+)\}/g;
+    let match;
+    while ((match = regex.exec(styleContent)) !== null) {
+      const selector = match[1].trim();
+      const body = match[2].trim();
+      // Si el selector coincide con alguno que usamos
+      if (usedSelectors.some(s => selector.includes(s))) {
+        // Agregar !important a cada propiedad
+        const importantBody = body.replace(/([^;]+):\s*([^;]+);/g, (m, prop, val) => {
+          if (val.includes('!important')) return m;
+          return `${prop.trim()}: ${val.trim()} !important;`;
+        });
+        cssRules.push(`${selector} { ${importantBody} }`);
+      }
+    }
+    const filteredStyle = `<style>\n${cssRules.join('\n')}\n</style>`;
 
     // Leer JSONs
     const hero = fs.existsSync(HERO_FILE) ? JSON.parse(fs.readFileSync(HERO_FILE, 'utf8')) : {};
     const intro = fs.existsSync(INTRO_FILE) ? JSON.parse(fs.readFileSync(INTRO_FILE, 'utf8')) : {};
     const highlightInfo = fs.existsSync(HIGHLIGHT_INFO_FILE) ? JSON.parse(fs.readFileSync(HIGHLIGHT_INFO_FILE, 'utf8')) : {};
 
-    // Reemplazar valores dinámicos
-    if (hero.alert) bodyContent = bodyContent.replace(/<div class="warning-alert">.*?<\/div>/, `<div class="warning-alert">${hero.alert}</div>`);
-    if (hero.title) bodyContent = bodyContent.replace(/<h1>.*?<\/h1>/, `<h1>${hero.title}</h1>`);
-    if (hero.subtitle) bodyContent = bodyContent.replace(/<p class="hero-subtitle">.*?<\/p>/, `<p class="hero-subtitle">${hero.subtitle}</p>`);
+    // Construir divs solo con JSONs
+    let bodyDivs = '';
 
-    if (intro.title) bodyContent = bodyContent.replace(/<section id="intro"[\s\S]*?<h2>.*?<\/h2>/, `<section id="intro"><h2>${intro.title}</h2>`);
+    bodyDivs += `<div class="hero-content fade-in-up">
+  <div class="warning-alert">${hero.alert || ''}</div>
+  <h1>${hero.title || ''}</h1>
+  <p class="hero-subtitle">${hero.subtitle || ''}</p>
+</div>\n`;
+
+    let testimonialsHtml = '';
     if (intro.testimonials) {
-      const testimonialsHtml = intro.testimonials.map(t => `
-        <div class="testimonial">
-          <div class="testimonial-text">${t.text}</div>
-          <div class="testimonial-author">${t.author}</div>
-          <div class="testimonial-role">${t.role}</div>
-          <div class="testimonial-metric">${t.metric}</div>
-        </div>
+      testimonialsHtml = intro.testimonials.map(t => `
+  <div class="testimonial">
+    <div class="testimonial-text">${t.text}</div>
+    <div class="testimonial-author">${t.author}</div>
+    <div class="testimonial-role">${t.role}</div>
+    <div class="testimonial-metric">${t.metric}</div>
+  </div>
       `).join("\n");
-      bodyContent = bodyContent.replace(/<div class="testimonials">[\s\S]*?<\/div>/, `<div class="testimonials">${testimonialsHtml}</div>`);
     }
 
-    if (highlightInfo.text) {
-      bodyContent = bodyContent.replace(/<div class="highlight highlight-info">[\s\S]*?<\/div>/, `<div class="highlight highlight-info">${highlightInfo.text}</div>`);
-    }
+    bodyDivs += `<section id="intro" class="section visible">
+  <h2>${intro.title || ''}</h2>
+  <div class="testimonials">
+    ${testimonialsHtml}
+  </div>
+</section>\n`;
+
+    bodyDivs += `<div class="highlight highlight-info">
+  ${highlightInfo.text || ''}
+</div>\n`;
 
     // Retornar JSON
     res.json({
       success: true,
-      html: styleContent + "\n" + bodyContent + "\n" + scriptContent
+      html: filteredStyle + "\n" + bodyDivs
     });
 
   } catch (err) {

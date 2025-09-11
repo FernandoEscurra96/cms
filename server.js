@@ -399,3 +399,50 @@ app.get('/api/html-for-post-inline', (req, res) => {
     res.status(500).send("No se pudo generar el HTML inline para el post");
   }
 });
+
+
+
+app.get('/api/html-for-post-inline-json', (req, res) => {
+  try {
+    // Leer los JSONs configurables
+    const hero = fs.existsSync(HERO_FILE) ? JSON.parse(fs.readFileSync(HERO_FILE, 'utf8')) : {};
+    const intro = fs.existsSync(INTRO_FILE) ? JSON.parse(fs.readFileSync(INTRO_FILE, 'utf8')) : {};
+    const highlightInfo = fs.existsSync(HIGHLIGHT_INFO_FILE) ? JSON.parse(fs.readFileSync(HIGHLIGHT_INFO_FILE, 'utf8')) : {};
+
+    // HTML completo como string
+    const blockHtml = `
+      <div class="cms-block">
+        <div class="hero-content fade-in-up">
+          <div class="warning-alert">${hero.alert || ''}</div>
+          <h1>${hero.title || ''}</h1>
+          <p class="hero-subtitle">${hero.subtitle || ''}</p>
+        </div>
+
+        <section id="intro">
+          <h2>${intro.title || ''}</h2>
+          <div class="testimonials">
+            ${(intro.testimonials || []).map(t => `
+              <div class="testimonial">
+                <div class="testimonial-text">${t.text}</div>
+                <div class="testimonial-author">${t.author}</div>
+                <div class="testimonial-role">${t.role}</div>
+                <div class="testimonial-metric">${t.metric}</div>
+              </div>
+            `).join('')}
+          </div>
+        </section>
+
+        <div class="highlight highlight-info">${highlightInfo.text || ''}</div>
+      </div>
+    `;
+
+    // Retornar JSON con el HTML
+    res.json({
+      success: true,
+      html: blockHtml
+    });
+  } catch (err) {
+    console.error("Error generando HTML inline para post:", err);
+    res.status(500).json({ success: false, error: "No se pudo generar el HTML" });
+  }
+});

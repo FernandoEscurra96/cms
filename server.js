@@ -446,3 +446,83 @@ app.get('/api/html-for-post-inline-json', (req, res) => {
     res.status(500).json({ success: false, error: "No se pudo generar el HTML" });
   }
 });
+
+
+app.get('/api/html-for-post-inline-json-all', (req, res) => {
+  try {
+    // 1. Leer configuraciones desde JSON
+    const hero = fs.existsSync(HERO_FILE) ? JSON.parse(fs.readFileSync(HERO_FILE, 'utf8')) : {};
+    const intro = fs.existsSync(INTRO_FILE) ? JSON.parse(fs.readFileSync(INTRO_FILE, 'utf8')) : {};
+    const highlightInfo = fs.existsSync(HIGHLIGHT_INFO_FILE) ? JSON.parse(fs.readFileSync(HIGHLIGHT_INFO_FILE, 'utf8')) : {};
+
+    // 2. Construir HTML completo con CSS + contenido + JS inline
+    const fullHtml = `
+      <style>
+        body { font-family: 'Inter', sans-serif; margin:0; padding:0; }
+        .cms-block { max-width:900px; margin:40px auto; padding:20px; }
+        .hero-content { background:#1e40af; color:#fff; padding:24px; border-radius:12px; text-align:center; margin-bottom:24px; }
+        .warning-alert { background:#ef4444; color:#fff; padding:12px 24px; border-radius:50px; font-weight:700; margin-bottom:16px; display:inline-block; }
+        .hero-subtitle { opacity:0.9; font-weight:400; margin-top:12px; }
+        .testimonial { background:#f8fafc; padding:16px; border-left:4px solid #10b981; border-radius:12px; margin-bottom:16px; }
+        .testimonial-text { font-style:italic; color:#111827; }
+        .testimonial-author { font-weight:700; color:#1e40af; margin-top:8px; }
+        .testimonial-role { color:#6b7280; font-size:14px; margin-bottom:8px; }
+        .testimonial-metric { background:#ecfdf5; color:#10b981; padding:8px 12px; border-radius:6px; font-size:14px; font-weight:600; display:inline-block; }
+        .highlight-info { background:#eff6ff; border:2px solid #1e40af; color:#1e40af; padding:16px; border-radius:12px; margin-top:24px; }
+      </style>
+
+      <article class="cms-block">
+        <!-- Hero -->
+        <div class="hero-content fade-in-up">
+          <div class="warning-alert">${hero.alert || ''}</div>
+          <h1>${hero.title || ''}</h1>
+          <p class="hero-subtitle">${hero.subtitle || ''}</p>
+        </div>
+
+        <!-- Intro / Testimonials -->
+        <section id="intro">
+          <h2>${intro.title || ''}</h2>
+          <div class="testimonials">
+            ${(intro.testimonials || []).map(t => `
+              <div class="testimonial">
+                <div class="testimonial-text">${t.text}</div>
+                <div class="testimonial-author">${t.author}</div>
+                <div class="testimonial-role">${t.role}</div>
+                <div class="testimonial-metric">${t.metric}</div>
+              </div>
+            `).join('')}
+          </div>
+        </section>
+
+        <!-- Highlight Info -->
+        <div class="highlight-info">
+          ${highlightInfo.text || ''}
+        </div>
+      </article>
+
+      <script>
+        // JS de ejemplo: animación fade-in
+        document.addEventListener("DOMContentLoaded", () => {
+          document.querySelectorAll(".fade-in-up").forEach(el => {
+            el.style.opacity = 0;
+            el.style.transform = "translateY(20px)";
+            setTimeout(() => {
+              el.style.transition = "all 0.8s ease";
+              el.style.opacity = 1;
+              el.style.transform = "translateY(0)";
+            }, 300);
+          });
+        });
+      </script>
+    `;
+
+    // 3. Retornar JSON con el HTML como string
+    res.json({
+      success: true,
+      html: fullHtml
+    });
+  } catch (err) {
+    console.error("Error generando HTML inline para post:", err);
+    res.status(500).json({ success: false, error: "No se pudo generar el HTML" });
+  }
+});

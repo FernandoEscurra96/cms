@@ -594,3 +594,76 @@ app.get('/api/html-for-post-inline-full', (req, res) => {
     res.status(500).json({ success: false, error: "No se pudo generar el HTML" });
   }
 });
+
+
+
+app.get('/api/html-for-post-inline-style', (req, res) => {
+  try {
+    const indexPath = path.join(__dirname, 'public', 'index.html');
+    if (!fs.existsSync(indexPath)) {
+      return res.status(404).json({ success: false, error: "index.html no encontrado" });
+    }
+
+    // 1. Leer el HTML base
+    let rawHtml = fs.readFileSync(indexPath, 'utf8');
+
+    // 2. Extraer solo desde <style> hasta el final del body (sin <!DOCTYPE>, <head>, <meta>)
+    const match = rawHtml.match(/<style[\s\S]*<\/body>/i);
+    if (!match) {
+      return res.status(500).json({ success: false, error: "No se pudo extraer estilos y body del index.html" });
+    }
+    let fullHtml = match[0];
+
+    // 3. Forzar !important en CSS
+    fullHtml = fullHtml.replace(/([^;}{]+):\s*([^;}{]+);/g, (match, prop, value) => {
+      if (value.includes('!important')) return match;
+      return `${prop.trim()}: ${value.trim()} !important;`;
+    });
+
+    // 4. Leer configuraciones JSON
+    const hero = fs.existsSync(HERO_FILE) ? JSON.parse(fs.readFileSync(HERO_FILE, 'utf8')) : {};
+    const intro = fs.existsSync(INTRO_FILE) ? JSON.parse(fs.readFileSync(INTRO_FILE, 'utf8')) : {};
+    const highlightInfo = fs.existsSync(HIGHLIGHT_INFO_FILE) ? JSON.parse(fs.readFileSync(HIGHLIGHT_INFO_FILE, 'utf8')) : {};
+
+    // 5. Sustituir dinámicamente secciones
+    if (hero.alert) {
+      fullHtml = fullHtml.replace(/<div class="warning-alert">.*?<\/div>/, `<div class="warning-alert">${hero.alert}</div>`);
+    }
+    if (hero.title) {
+      fullHtml = fullHtml.replace(/<h1>.*?<\/h1>/, `<h1>${hero.title}</h1>`);
+    }
+    if (hero.subtitle) {
+      fullHtml = fullHtml.replace(/<p class="hero-subtitle">.*?<\/p>/, `<p class="hero-subtitle">${hero.subtitle}</p>`);
+    }
+
+    if (intro.title) {
+      fullHtml = fullHtml.replace(/<section id="intro"[\s\S]*?<h2>.*?<\/h2>/, `<section id="intro">\n  <h2>${intro.title}</h2>`);
+    }
+    if (intro.testimonials) {
+      const testimonialsHtml = intro.testimonials.map(t => `
+        <div class="testimonial">
+          <div class="testimonial-text">${t.text}</div>
+          <div class="testimonial-author">${t.author}</div>
+          <div class="testimonial-role">${t.role}</div>
+          <div class="testimonial-metric">${t.metric}</div>
+        </div>
+      `).join("\n");
+
+      fullHtml = fullHtml.replace(/<div class="testimonials">[\s\S]*?<\/div>/, `<div class="testimonials">${testimonialsHtml}</div>`);
+    }
+
+    if (highlightInfo.text) {
+      fullHtml = fullHtml.replace(/<div class="highlight highlight-info">[\s\S]*?<\/div>/, `<div class="highlight highlight-info">${highlightInfo.text}</div>`);
+    }
+
+    // 6. Retornar JSON
+    res.json({
+      success: true,
+      html: fullHtml
+    });
+
+  } catch (err) {
+    console.error("Error generando HTML inline para post:", err);
+    res.status(500).json({ success: false, error: "No se pudo generar el HTML" });
+  }
+});

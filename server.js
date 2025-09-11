@@ -338,3 +338,64 @@ app.get('/api/html-for-wordpress', (req, res) => {
     res.status(500).json({ error: "No se pudo generar el HTML para WordPress" });
   }
 });
+
+
+
+app.get('/api/html-for-post-inline', (req, res) => {
+  try {
+    // Leer los JSONs configurables
+    const hero = fs.existsSync(HERO_FILE) ? JSON.parse(fs.readFileSync(HERO_FILE, 'utf8')) : {};
+    const intro = fs.existsSync(INTRO_FILE) ? JSON.parse(fs.readFileSync(INTRO_FILE, 'utf8')) : {};
+    const highlightInfo = fs.existsSync(HIGHLIGHT_INFO_FILE) ? JSON.parse(fs.readFileSync(HIGHLIGHT_INFO_FILE, 'utf8')) : {};
+
+    // Bloque HTML completo con CSS inline
+    const blockHtml = `
+      <style>
+        .cms-block { font-family: 'Inter', sans-serif; line-height:1.6; }
+        .hero-content { background: #1e40af; color: #fff; padding: 24px; border-radius: 12px; text-align:center; margin-bottom:24px; }
+        .warning-alert { background:#ef4444; color:#fff; padding:12px 24px; border-radius:50px; font-weight:700; margin-bottom:16px; display:inline-block; }
+        .hero-subtitle { opacity:0.9; font-weight:400; margin-top:12px; }
+        .testimonial { background:#f8fafc; padding:16px; border-left:4px solid #10b981; border-radius:12px; margin-bottom:16px; }
+        .testimonial-text { font-style:italic; color:#111827; }
+        .testimonial-author { font-weight:700; color:#1e40af; margin-top:8px; }
+        .testimonial-role { color:#6b7280; font-size:14px; margin-bottom:8px; }
+        .testimonial-metric { background:#ecfdf5; color:#10b981; padding:8px 12px; border-radius:6px; font-size:14px; font-weight:600; display:inline-block; }
+        .highlight-info { background:#eff6ff; border:2px solid #1e40af; color:#1e40af; padding:16px; border-radius:12px; margin-top:24px; }
+      </style>
+
+      <div class="cms-block">
+        <!-- Hero -->
+        <div class="hero-content">
+          <div class="warning-alert">${hero.alert || ''}</div>
+          <h1>${hero.title || ''}</h1>
+          <p class="hero-subtitle">${hero.subtitle || ''}</p>
+        </div>
+
+        <!-- Intro / Testimonials -->
+        <section id="intro">
+          <h2>${intro.title || ''}</h2>
+          <div class="testimonials">
+            ${(intro.testimonials || []).map(t => `
+              <div class="testimonial">
+                <div class="testimonial-text">${t.text}</div>
+                <div class="testimonial-author">${t.author}</div>
+                <div class="testimonial-role">${t.role}</div>
+                <div class="testimonial-metric">${t.metric}</div>
+              </div>
+            `).join('')}
+          </div>
+        </section>
+
+        <!-- Highlight Info -->
+        <div class="highlight-info">${highlightInfo.text || ''}</div>
+      </div>
+    `;
+
+    // Retornar HTML completo para copiar/pegar
+    res.setHeader('Content-Type', 'text/html');
+    res.send(blockHtml);
+  } catch (err) {
+    console.error("Error generando HTML inline para post:", err);
+    res.status(500).send("No se pudo generar el HTML inline para el post");
+  }
+});

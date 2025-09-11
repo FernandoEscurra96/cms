@@ -18,6 +18,16 @@ app.use(
   })
 );
 
+
+const cors = require('cors');
+
+// 🔓 Permitir que WordPress consuma la API
+app.use(cors({
+  origin: "https://horecarentable.com", // tu dominio WP
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type"]
+}));
+
 // Servir archivos estáticos desde /public
 app.use(express.static(path.join(__dirname, 'public')));
 

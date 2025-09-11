@@ -1,15 +1,1 @@
-{
-"name": "node-cms-prokitchen",
-"version": "1.0.0",
-"description": "CMS simple para editar y servir el HTML de ProKitchen Test",
-"main": "server.js",
-"scripts": {
-"start": "node server.js"
-},
-"dependencies": {
-"express": "^4.18.2",
-"body-parser": "^1.20.2",
-"helmet": "^7.0.0",
-"morgan": "^1.10.0"
-}
-}
+{"name":"node-cms-prokitchen","version":"1.0.0","description":"CMS simple para editar y servir el HTML de ProKitchen Test","main":"server.js","scripts":{"start":"node server.js"},"dependencies":{"body-parser":"^1.20.2","cors":"^2.8.5","express":"^4.18.2","helmet":"^7.0.0","morgan":"^1.10.0"}}

@@ -1,0 +1,10 @@
+<div id="my-cms-container"></div>
+
+<script>
+fetch("https://cms-9bht.onrender.com/api/html-for-wordpress")
+  .then(res => res.json())
+  .then(data => {
+    document.getElementById("my-cms-container").innerHTML = data.html;
+  })
+  .catch(err => console.error("Error cargando HTML desde CMS:", err));
+</script>

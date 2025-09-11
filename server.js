@@ -272,3 +272,69 @@ app.get('/api/full-html', (req, res) => {
     res.status(500).send("Error generando HTML completo");
   }
 });
+
+
+app.get('/api/html-for-wordpress', (req, res) => {
+  try {
+    // Leer los JSONs configurables
+    const hero = fs.existsSync(HERO_FILE) ? JSON.parse(fs.readFileSync(HERO_FILE, 'utf8')) : {};
+    const intro = fs.existsSync(INTRO_FILE) ? JSON.parse(fs.readFileSync(INTRO_FILE, 'utf8')) : {};
+    const highlightInfo = fs.existsSync(HIGHLIGHT_INFO_FILE) ? JSON.parse(fs.readFileSync(HIGHLIGHT_INFO_FILE, 'utf8')) : {};
+
+    // Leer el template HTML original
+    const htmlTemplate = fs.readFileSync(path.join(__dirname, 'public', 'index.html'), 'utf8');
+
+    // Inyectar JSONs dentro del HTML
+    let htmlFinal = htmlTemplate;
+
+    // Hero
+    htmlFinal = htmlFinal.replace(
+      /<div class="hero-content fade-in-up">[\s\S]*?<\/div>\s*<\/div>\s*<\/section>/,
+      `
+      <div class="hero-content fade-in-up">
+        <div class="warning-alert">${hero.alert || ''}</div>
+        <h1>${hero.title || ''}</h1>
+        <p class="hero-subtitle">${hero.subtitle || ''}</p>
+      </div>
+    </div>
+    </section>
+      `
+    );
+
+    // Intro (testimonials)
+    const testimonialsHtml = (intro.testimonials || []).map(t => `
+      <div class="testimonial">
+        <div class="testimonial-text">${t.text}</div>
+        <div class="testimonial-author">${t.author}</div>
+        <div class="testimonial-role">${t.role}</div>
+        <div class="testimonial-metric">${t.metric}</div>
+      </div>
+    `).join('\n');
+
+    htmlFinal = htmlFinal.replace(
+      /<section id="intro" class="section[\s\S]*?<\/section>/,
+      `
+      <section id="intro" class="section visible">
+        <h2>${intro.title || ''}</h2>
+        <div class="testimonials">
+          ${testimonialsHtml}
+        </div>
+      </section>
+      `
+    );
+
+    // Highlight-info
+    htmlFinal = htmlFinal.replace(
+      /<div class="highlight highlight-info">[\s\S]*?<\/div>/,
+      `<div class="highlight highlight-info">${highlightInfo.text || ''}</div>`
+    );
+
+    // Retornar JSON con HTML
+    res.json({
+      html: htmlFinal
+    });
+  } catch (err) {
+    console.error("Error generando HTML para WordPress:", err);
+    res.status(500).json({ error: "No se pudo generar el HTML para WordPress" });
+  }
+});

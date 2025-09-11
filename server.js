@@ -526,3 +526,27 @@ app.get('/api/html-for-post-inline-json-all', (req, res) => {
     res.status(500).json({ success: false, error: "No se pudo generar el HTML" });
   }
 });
+
+
+// Endpoint que devuelve el index.html completo como JSON
+app.get('/api/html-for-post-inline-full', (req, res) => {
+  try {
+    const indexPath = path.join(__dirname, 'public', 'index.html');
+
+    if (!fs.existsSync(indexPath)) {
+      return res.status(404).json({ success: false, error: "index.html no encontrado" });
+    }
+
+    // Leer el HTML entero
+    const fullHtml = fs.readFileSync(indexPath, 'utf8');
+
+    // Retornar como JSON con una sola clave
+    res.json({
+      success: true,
+      html: fullHtml
+    });
+  } catch (err) {
+    console.error("Error generando HTML inline para post:", err);
+    res.status(500).json({ success: false, error: "No se pudo generar el HTML" });
+  }
+});
